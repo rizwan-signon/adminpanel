@@ -1,9 +1,10 @@
 import React from "react";
+import Login from "./pages/Login";
 
 const App = () => {
   return (
-    <div className="flex items-center justify-center text-2xl">
-      <h4 className="text-2xl text-red-600">hello worldd </h4>
+    <div class="min-h-screen bg-linear-to-br from-slate-900 via-slate-800 to-slate-900 text-white">
+      <Login />
     </div>
   );
 };
