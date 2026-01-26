@@ -18,9 +18,23 @@ const Register = () => {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(formData);
+    try {
+      const response = await fetch("http://localhost:8000/auth/register", {
+        method: "POST",
+        headers: {
+          "content-type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+      console.log("Response status:", response);
+      const data = await response.json();
+      console.log(data);
+    } catch (error) {
+      console.error("Network error:", error);
+      alert("Something went wrong. Please try again.");
+    }
   };
 
   return (
@@ -39,7 +53,7 @@ const Register = () => {
             name="fullname"
             value={formData.fullname}
             onChange={handleChange}
-            className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-white/50 focus:ring-2 focus:ring-indigo-500 outline-none"
+            className="input"
             placeholder="Full Name"
             required
           />
@@ -49,7 +63,7 @@ const Register = () => {
             name="email"
             value={formData.email}
             onChange={handleChange}
-            className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-white/50 focus:ring-2 focus:ring-indigo-500 outline-none"
+            className="input"
             placeholder="Email"
             required
           />
@@ -59,7 +73,7 @@ const Register = () => {
             name="password"
             value={formData.password}
             onChange={handleChange}
-            className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-white/50 focus:ring-2 focus:ring-indigo-500 outline-none"
+            className="input"
             placeholder="Password"
             required
           />
@@ -69,7 +83,7 @@ const Register = () => {
             name="confirmPassword"
             value={formData.confirmPassword}
             onChange={handleChange}
-            className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-white/50 focus:ring-2 focus:ring-indigo-500 outline-none"
+            className="input"
             placeholder="Confirm Password"
             required
           />
@@ -79,7 +93,7 @@ const Register = () => {
             name="phone"
             value={formData.phone}
             onChange={handleChange}
-            className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-white/50 focus:ring-2 focus:ring-indigo-500 outline-none"
+            className="input"
             placeholder="Phone number"
           />
 
