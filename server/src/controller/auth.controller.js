@@ -1,6 +1,5 @@
 const registerUser = (req, res) => {
-  console.log(req.body);
-  res.json(req.body);
+  const { fullName, email, password, phone } = req.body;
 };
 
 export { registerUser };

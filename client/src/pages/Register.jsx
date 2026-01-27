@@ -4,7 +4,7 @@ import { validateUser } from "../utils/validateuser";
 const Register = () => {
   const [errors, setErrors] = useState({});
   const [formData, setFormData] = useState({
-    fullname: "",
+    fullName: "",
     email: "",
     password: "",
     confirmPassword: "",
@@ -21,23 +21,28 @@ const Register = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     const validationErrors = validateUser(formData);
     setErrors(validationErrors);
-    console.log("errors", errors);
 
-    if (Object.keys(validationErrors).length > 0) {
-      return;
-    }
+    if (Object.keys(validationErrors).length > 0) return;
+
+    const userPayload = {
+      fullName: formData.fullName,
+      email: formData.email,
+      password: formData.password,
+      phone: formData.phone,
+    };
 
     try {
       const response = await fetch("http://localhost:8000/auth/register", {
         method: "POST",
         headers: {
-          "content-type": "application/json",
+          "Content-Type": "application/json",
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(userPayload),
       });
-      console.log("Response status:", response);
+
       const data = await response.json();
       console.log(data);
     } catch (error) {
@@ -54,7 +59,7 @@ const Register = () => {
         </h1>
         <div>
           {Object.keys(errors).length > 0 && (
-            <div className="mb-4 p-4 bg-red-100 border border-red-400 text-red-700 rounded">
+            <div className="mb-2 p-2 bg-red-100 border border-red-400 text-red-700 rounded">
               <ul className="list-disc list-inside">
                 {Object.entries(errors).map(([field, errorMsg]) => (
                   <li key={field}>{errorMsg}</li>
@@ -69,8 +74,8 @@ const Register = () => {
         >
           <input
             type="text"
-            name="fullname"
-            value={formData.fullname}
+            name="fullName"
+            value={formData.fullName}
             onChange={handleChange}
             className="input"
             placeholder="Full Name"
