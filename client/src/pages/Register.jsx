@@ -1,6 +1,8 @@
 import React, { useState } from "react";
+import { validateUser } from "../utils/validateuser";
 
 const Register = () => {
+  const [errors, setErrors] = useState({});
   const [formData, setFormData] = useState({
     fullname: "",
     email: "",
@@ -9,7 +11,6 @@ const Register = () => {
     phone: "",
   });
 
-  // Handle input changes
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
@@ -20,6 +21,14 @@ const Register = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const validationErrors = validateUser(formData);
+    setErrors(validationErrors);
+    console.log("errors", errors);
+
+    if (Object.keys(validationErrors).length > 0) {
+      return;
+    }
+
     try {
       const response = await fetch("http://localhost:8000/auth/register", {
         method: "POST",
@@ -43,7 +52,17 @@ const Register = () => {
         <h1 className="text-3xl text-center font-bold text-white mb-6">
           Create Account
         </h1>
-
+        <div>
+          {Object.keys(errors).length > 0 && (
+            <div className="mb-4 p-4 bg-red-100 border border-red-400 text-red-700 rounded">
+              <ul className="list-disc list-inside">
+                {Object.entries(errors).map(([field, errorMsg]) => (
+                  <li key={field}>{errorMsg}</li>
+                ))}
+              </ul>
+            </div>
+          )}
+        </div>
         <form
           onSubmit={handleSubmit}
           className="flex flex-col justify-center space-y-4"
@@ -55,7 +74,6 @@ const Register = () => {
             onChange={handleChange}
             className="input"
             placeholder="Full Name"
-            required
           />
 
           <input
@@ -65,7 +83,6 @@ const Register = () => {
             onChange={handleChange}
             className="input"
             placeholder="Email"
-            required
           />
 
           <input
@@ -75,7 +92,6 @@ const Register = () => {
             onChange={handleChange}
             className="input"
             placeholder="Password"
-            required
           />
 
           <input
@@ -85,7 +101,6 @@ const Register = () => {
             onChange={handleChange}
             className="input"
             placeholder="Confirm Password"
-            required
           />
 
           <input
