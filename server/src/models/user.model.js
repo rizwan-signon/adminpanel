@@ -30,6 +30,13 @@ const userSchema = new mongoose.Schema(
       type: String,
       match: [/^\d{10,15}$/, "Phone number is invalid"],
     },
+    isVerified: {
+      type: Boolean,
+      default: false,
+    },
+    verificationToken: String,
+    resetPasswordToken: String,
+    resetPasswordExpires: Date,
   },
   { timestamps: true },
 );
