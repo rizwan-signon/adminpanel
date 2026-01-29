@@ -28,7 +28,6 @@ const userSchema = new mongoose.Schema(
     },
     phone: {
       type: String,
-      match: [/^\d{10,15}$/, "Phone number is invalid"],
     },
     isVerified: {
       type: Boolean,

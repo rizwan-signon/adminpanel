@@ -4,6 +4,7 @@ import cors from "cors";
 import { config } from "dotenv";
 config();
 import { connectDb } from "./configs/connectdb.js";
+import globalerrorhandler from "./middlewares/error.js";
 
 const app = express();
 
@@ -13,6 +14,7 @@ connectDb();
 app.use(cors());
 app.use(express.json());
 app.use("/auth", userRoutes);
+app.use(globalerrorhandler);
 app.listen(PORT, () => {
   console.log(`app is listening on port ${PORT}`);
 });

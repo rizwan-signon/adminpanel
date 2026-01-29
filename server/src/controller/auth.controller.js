@@ -1,9 +1,16 @@
 import User from "../models/user.model.js";
 import bcryptjs from "bcryptjs";
-const registerUser = async (req, res) => {
+const registerUser = async (req, res, next) => {
   try {
     const { fullName, email, password, phone } = req.body;
-    console.log(typeof phone);
+
+    if (!fullName || !email || !password || !phone) {
+      return res.status(400).json({ message: "All fields are required" });
+    }
+    const existingUser = await User.findOne({ email });
+    if (existingUser) {
+      return res.status(400).json({ message: "User already exists" });
+    }
     const hashPassword = await bcryptjs.hash(password, 10);
     const newUser = await User.create({
       fullName,
@@ -14,7 +21,7 @@ const registerUser = async (req, res) => {
 
     res.json({ message: "User registered successfully", userId: newUser._id });
   } catch (error) {
-    res.status(500).json({ message: "Server error", error: error.message });
+    next(error);
   }
 };
 
