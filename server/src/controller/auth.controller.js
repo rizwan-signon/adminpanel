@@ -41,4 +41,26 @@ const registerUser = async (req, res, next) => {
   }
 };
 
-export { registerUser };
+const verifyEmail = async (req, res, next) => {
+  try {
+    const { token, id } = req.query;
+    const user = await User.findById(id);
+    if (!user) {
+      return res.status(400).json({ message: "Invalid link" });
+    }
+    if (user.isVerified) {
+      return res.status(400).json({ message: "User already verified" });
+    }
+    if (user.verificationToken !== token) {
+      return res.status(400).json({ message: "Invalid token" });
+    }
+    user.isVerified = true;
+    user.verificationToken = undefined;
+    await user.save();
+    res.status(200).json({ message: "Email verified successfully" });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export { registerUser, verifyEmail };
