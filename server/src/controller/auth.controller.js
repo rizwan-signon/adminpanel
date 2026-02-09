@@ -22,7 +22,7 @@ const registerUser = async (req, res, next) => {
       phone,
       verificationToken,
     });
-    const verifyurl = `${process.env.CLIENT_URL}/verify-email?token=${verificationToken}&id=${newUser._id}`;
+    const verifyurl = `${process.env.CLIENT_URL}/auth/verify-email?token=${verificationToken}&id=${newUser._id}`;
     await sendEmail({
       to: email,
       subject: "Verify your email",
